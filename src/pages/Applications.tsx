@@ -141,7 +141,7 @@ export default function Applications() {
                     )}
                   </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" onClick={() => setEditApp(app)}>
+                    <Button variant="ghost" size="icon" onClick={() => openEdit(app)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => setDeleteId(app.id)}>
