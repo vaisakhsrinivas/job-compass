@@ -43,6 +43,13 @@ export default function Applications() {
     setDeleteId(null);
   };
 
+  const [editStatus, setEditStatus] = useState<ApplicationStatus>("applied");
+
+  const openEdit = (app: Application) => {
+    setEditApp(app);
+    setEditStatus(app.status);
+  };
+
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!editApp) return;
@@ -52,7 +59,7 @@ export default function Applications() {
         id: editApp.id,
         company: (fd.get("company") as string).trim(),
         position: (fd.get("position") as string).trim(),
-        status: fd.get("status") as ApplicationStatus,
+        status: editStatus,
         notes: (fd.get("notes") as string) || null,
         location: (fd.get("location") as string) || null,
         salary_range: (fd.get("salary_range") as string) || null,
