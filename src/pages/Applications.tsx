@@ -173,7 +173,7 @@ export default function Applications() {
               </div>
               <div className="space-y-2">
                 <Label>Status</Label>
-                <Select name="status" defaultValue={editApp.status}>
+                <Select value={editStatus} onValueChange={(v) => setEditStatus(v as ApplicationStatus)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="applied">Applied</SelectItem>
