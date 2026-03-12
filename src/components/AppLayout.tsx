@@ -47,6 +47,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+              aria-label="Toggle dark mode"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
             <span className="hidden text-sm text-primary-foreground/60 lg:inline">
               {user?.email}
             </span>
