@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Briefcase, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.png";
 
 type Mode = "login" | "signup" | "forgot";
 
@@ -51,10 +52,10 @@ export default function Auth() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm border-border/60 shadow-lg">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-            <Briefcase className="h-5 w-5 text-primary-foreground" />
+          <div className="mx-auto mb-3">
+            <img src={logo} alt="JobTracker" className="h-10" />
           </div>
           <CardTitle className="text-xl">
             {mode === "login" ? "Welcome back" : mode === "signup" ? "Create account" : "Reset password"}
@@ -117,16 +118,16 @@ export default function Auth() {
             <div className="flex flex-wrap justify-center gap-2 text-sm">
               {mode === "login" ? (
                 <>
-                  <button type="button" className="text-primary hover:underline" onClick={() => setMode("signup")}>
+                  <button type="button" className="text-accent hover:underline" onClick={() => setMode("signup")}>
                     Create account
                   </button>
                   <span className="text-muted-foreground">·</span>
-                  <button type="button" className="text-primary hover:underline" onClick={() => setMode("forgot")}>
+                  <button type="button" className="text-accent hover:underline" onClick={() => setMode("forgot")}>
                     Forgot password?
                   </button>
                 </>
               ) : (
-                <button type="button" className="text-primary hover:underline" onClick={() => setMode("login")}>
+                <button type="button" className="text-accent hover:underline" onClick={() => setMode("login")}>
                   Back to sign in
                 </button>
               )}
