@@ -100,9 +100,8 @@ src/
 ## What I Learned
 
 1. This is my first project using the lovable tool, and I have certainly learned a lot in the first week of this project (still a lot more to learn).
-
-- How to efficiently use the prompt has been the primary learning.
-- Modifying the project and understanding the file changes happening.
+   - How to efficiently use the prompt has been the primary learning.
+   - Modifying the project and understanding the file changes happening.
 
 2. Understanding the tech stack - certainly a lot to learn here !!!
 3. Learn more !!!!
