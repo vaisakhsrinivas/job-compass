@@ -46,18 +46,18 @@ graph TD
 
 ## Tech Stack
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Framework | React 18 | Component-driven UI with a mature ecosystem |
-| Build Tool | Vite | Lightning-fast HMR and optimized production builds |
-| Language | TypeScript | Type safety across the entire codebase |
-| Styling | Tailwind CSS | Utility-first CSS for rapid, consistent design |
-| UI Components | shadcn/ui + Radix | Accessible, composable primitives with full control |
-| State & Fetching | TanStack React Query | Declarative server-state caching and synchronization |
-| Forms | React Hook Form + Zod | Performant forms with schema-based validation |
-| Routing | React Router v6 | Declarative client-side routing with protected routes |
-| Backend | Lovable Cloud | Managed database, auth, and row-level security |
-| Charts | Recharts | Composable charting for the dashboard metrics |
+| Layer            | Technology            | Why                                                   |
+| ---------------- | --------------------- | ----------------------------------------------------- |
+| Framework        | React 18              | Component-driven UI with a mature ecosystem           |
+| Build Tool       | Vite                  | Lightning-fast HMR and optimized production builds    |
+| Language         | TypeScript            | Type safety across the entire codebase                |
+| Styling          | Tailwind CSS          | Utility-first CSS for rapid, consistent design        |
+| UI Components    | shadcn/ui + Radix     | Accessible, composable primitives with full control   |
+| State & Fetching | TanStack React Query  | Declarative server-state caching and synchronization  |
+| Forms            | React Hook Form + Zod | Performant forms with schema-based validation         |
+| Routing          | React Router v6       | Declarative client-side routing with protected routes |
+| Backend          | Lovable Cloud         | Managed database, auth, and row-level security        |
+| Charts           | Recharts              | Composable charting for the dashboard metrics         |
 
 ## Deployment
 
@@ -96,3 +96,17 @@ src/
 ├── main.tsx             # Entry point
 └── index.css            # Design tokens and global styles
 ```
+
+## What I Learned
+
+1. This is my first project using the lovable tool, and I have certainly learned a lot in the first week of this project (still a lot more to learn).
+
+- How to efficiently use the prompt has been the primary learning.
+- Modifying the project and understanding the file changes happening.
+
+2. Understanding the tech stack - certainly a lot to learn here !!!
+3. Learn more !!!!
+
+## Future Improvements
+
+1. Plan to add a few features in the coming weeks while working on the project
