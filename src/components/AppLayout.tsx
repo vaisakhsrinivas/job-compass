@@ -2,9 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { LayoutDashboard, PlusCircle, List, LogOut, Menu, Briefcase } from "lucide-react";
+import { LayoutDashboard, PlusCircle, List, LogOut, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -19,22 +20,21 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 border-b bg-card/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 border-b bg-primary">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
-            <Briefcase className="h-5 w-5 text-primary" />
-            <span className="hidden sm:inline">JobTracker</span>
+          <Link to="/" className="flex items-center gap-2">
+            <img src={logo} alt="JobTracker" className="h-8" />
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <Link key={item.to} to={item.to}>
                 <Button
-                  variant={location.pathname === item.to ? "secondary" : "ghost"}
+                  variant="ghost"
                   size="sm"
                   className={cn(
-                    "gap-2",
-                    location.pathname === item.to && "font-medium"
+                    "gap-2 text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground",
+                    location.pathname === item.to && "bg-primary-foreground/15 text-primary-foreground font-medium"
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -45,17 +45,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <span className="hidden text-sm text-muted-foreground lg:inline">
+            <span className="hidden text-sm text-primary-foreground/60 lg:inline">
               {user?.email}
             </span>
-            <Button variant="ghost" size="sm" onClick={signOut} className="hidden gap-2 md:flex">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={signOut}
+              className="hidden gap-2 text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground md:flex"
+            >
               <LogOut className="h-4 w-4" />
               Sign Out
             </Button>
 
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <Button variant="ghost" size="icon" className="text-primary-foreground md:hidden hover:bg-primary-foreground/10">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
