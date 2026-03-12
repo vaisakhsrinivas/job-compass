@@ -6,39 +6,33 @@ Job hunting is chaotic. Between dozens of applications, scattered browser tabs, 
 
 ## Architecture
 
-```
-┌──────────────────────────────────────────────────┐
-│                    Frontend                      │
-│          React + Vite + Tailwind CSS             │
-│                                                  │
-│  ┌───────────┐  ┌────────────┐  ┌────────────┐  │
-│  │ Dashboard  │  │  Add App   │  │  App List  │  │
-│  │  (stats)   │  │  (form)    │  │  (table)   │  │
-│  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  │
-│        │               │               │         │
-│        └───────┬───────┴───────┬───────┘         │
-│                │               │                 │
-│         useApplications   useAuth                │
-│           (React Query)   (Auth Hook)            │
-│                │               │                 │
-│                └───────┬───────┘                 │
-│                        │                         │
-│              Supabase JS Client                  │
-└────────────────────────┬─────────────────────────┘
-                         │  HTTPS / REST
-┌────────────────────────┴─────────────────────────┐
-│                 Lovable Cloud                    │
-│                                                  │
-│   ┌──────────────┐   ┌───────────────────────┐   │
-│   │ Auth Service  │   │  PostgreSQL Database  │   │
-│   │ (email/pass)  │   │  ┌─────────────────┐  │   │
-│   └──────────────┘   │  │  applications    │  │   │
-│                       │  │  profiles        │  │   │
-│   ┌──────────────┐   │  │  user_roles      │  │   │
-│   │  Row-Level   │   │  └─────────────────┘  │   │
-│   │  Security    │   └───────────────────────┘   │
-│   └──────────────┘                               │
-└──────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph Frontend["Frontend — React + Vite + Tailwind CSS"]
+        Dashboard["Dashboard (stats)"]
+        AddApp["Add App (form)"]
+        AppList["App List (table)"]
+        Dashboard --> Hooks
+        AddApp --> Hooks
+        AppList --> Hooks
+        subgraph Hooks["Hooks"]
+            useApplications["useApplications (React Query)"]
+            useAuth["useAuth (Auth Hook)"]
+        end
+        Hooks --> Client["Supabase JS Client"]
+    end
+
+    Client -->|"HTTPS / REST"| Cloud
+
+    subgraph Cloud["Lovable Cloud"]
+        Auth["Auth Service (email/pass)"]
+        RLS["Row-Level Security"]
+        subgraph DB["PostgreSQL Database"]
+            applications
+            profiles
+            user_roles
+        end
+    end
 ```
 
 ## Key Features
