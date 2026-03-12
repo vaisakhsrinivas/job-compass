@@ -16,6 +16,7 @@ const navItems = [
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const { signOut, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
