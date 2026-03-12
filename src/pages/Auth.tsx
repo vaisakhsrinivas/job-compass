@@ -55,7 +55,7 @@ export default function Auth() {
       <Card className="w-full max-w-sm border-border/60 shadow-lg">
         <CardHeader className="text-center">
           <div className="mx-auto mb-3">
-            <img src={logo} alt="JobTracker" className="h-14 md:h-16" />
+            <img src={logo} alt="JobTracker" className="h-16 md:h-18" />
           </div>
           <CardTitle className="text-xl">
             {mode === "login" ? "Welcome back" : mode === "signup" ? "Create account" : "Reset password"}
@@ -64,8 +64,8 @@ export default function Auth() {
             {mode === "login"
               ? "Sign in to your job tracker"
               : mode === "signup"
-              ? "Start tracking your applications"
-              : "Enter your email to reset"}
+                ? "Start tracking your applications"
+                : "Enter your email to reset"}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
