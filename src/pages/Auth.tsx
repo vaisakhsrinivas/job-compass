@@ -55,7 +55,7 @@ export default function Auth() {
       <Card className="w-full max-w-sm border-border/60 shadow-lg">
         <CardHeader className="text-center">
           <div className="mx-auto mb-3">
-            <img src={logo} alt="JobTracker" className="h-10" />
+            <img src={logo} alt="JobTracker" className="h-14 md:h-16" />
           </div>
           <CardTitle className="text-xl">
             {mode === "login" ? "Welcome back" : mode === "signup" ? "Create account" : "Reset password"}
