@@ -25,7 +25,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-40 border-b bg-primary">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="JobTracker" className="h-14 md:h-16 dark:brightness-0 dark:invert" />
+            <img src={logo} alt="JobTracker" className="h-16 md:h-18 dark:brightness-0 dark:invert" />
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
@@ -36,7 +36,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   size="sm"
                   className={cn(
                     "gap-2 text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground",
-                    location.pathname === item.to && "bg-primary-foreground/15 text-primary-foreground font-medium"
+                    location.pathname === item.to && "bg-primary-foreground/15 text-primary-foreground font-medium",
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -56,9 +56,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <span className="hidden text-sm text-primary-foreground/60 lg:inline">
-              {user?.email}
-            </span>
+            <span className="hidden text-sm text-primary-foreground/60 lg:inline">{user?.email}</span>
             <Button
               variant="ghost"
               size="sm"
@@ -71,7 +69,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-primary-foreground md:hidden hover:bg-primary-foreground/10">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-primary-foreground md:hidden hover:bg-primary-foreground/10"
+                >
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
