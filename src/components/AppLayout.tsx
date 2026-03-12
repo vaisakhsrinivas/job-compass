@@ -25,7 +25,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-40 border-b bg-primary">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="JobTracker" className="h-10 md:h-12" />
+            <img src={logo} alt="JobTracker" className="h-14 md:h-16" />
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
