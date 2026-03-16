@@ -8,6 +8,14 @@ import { getIndustryIcon } from "@/components/industryIcons";
 import { getCompanyIcon } from "@/components/companyIcons";
 import { COMPANY_DOMAINS } from "@/components/companyDomains";
 
+const VALID_INDUSTRIES = new Set([
+  "Search & Cloud", "Social Media", "AI / ML", "E-Commerce & Cloud", "Retail",
+  "Enterprise Software", "Hardware & IT", "Consumer Electronics", "Entertainment",
+  "Mobility", "Fintech", "Creative Software", "Automotive & Energy",
+  "Travel & Hospitality", "Data & Analytics", "Networking & Security",
+  "SaaS & IT Service Management", "Other",
+]);
+
 // Position → category mapping by keyword
 const POSITION_KEYWORDS: [string, string][] = [
   ["sdet", "Test Engineering"],
@@ -42,9 +50,17 @@ const POSITION_KEYWORDS: [string, string][] = [
   ["ui", "Design"],
 ];
 
-function getCompanyDomain(company: string): string {
-  const key = company.toLowerCase().trim();
-  return COMPANY_DOMAINS[key] ?? "Other";
+function getCompanyDomainFromApp(app: Application): string {
+  const key = app.company.toLowerCase().trim();
+  const staticDomain = COMPANY_DOMAINS[key];
+  if (staticDomain) return staticDomain;
+  // Fall back to tags — use the first tag that matches a valid industry
+  if (app.tags) {
+    for (const tag of app.tags) {
+      if (VALID_INDUSTRIES.has(tag)) return tag;
+    }
+  }
+  return "Other";
 }
 
 function getPositionCategory(position: string): string {
@@ -102,7 +118,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
   // Group by company domain
   const domainGroups = new Map<string, Application[]>();
   for (const app of applications) {
-    const domain = getCompanyDomain(app.company);
+    const domain = getCompanyDomainFromApp(app);
     if (!domainGroups.has(domain)) domainGroups.set(domain, []);
     domainGroups.get(domain)!.push(app);
   }
