@@ -41,6 +41,8 @@ graph TD
 - **Application tracking** — Log company, position, salary range, location, and job URL for every application
 - **Status management** — Move applications through stages: Applied → Interview Scheduled → Offer / Rejected
 - **Tag system** — Organize applications with custom tags for easy filtering
+- **Industry & company categorization** — Auto-categorizes companies by industry domain (AI/ML, Fintech, etc.) with generated logos and drill-down navigation
+- **Position categorization** — Auto-groups positions by role type (Software Engineering, Test Engineering, Program Management, etc.)
 - **Secure & private** — Row-level security ensures each user can only see their own data
 - **Email authentication** — Sign up, log in, and reset your password securely
 
