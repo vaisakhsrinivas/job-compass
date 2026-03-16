@@ -8,6 +8,14 @@ import { getIndustryIcon } from "@/components/industryIcons";
 import { getCompanyIcon } from "@/components/companyIcons";
 import { COMPANY_DOMAINS } from "@/components/companyDomains";
 
+const VALID_INDUSTRIES = new Set([
+  "Search & Cloud", "Social Media", "AI / ML", "E-Commerce & Cloud", "Retail",
+  "Enterprise Software", "Hardware & IT", "Consumer Electronics", "Entertainment",
+  "Mobility", "Fintech", "Creative Software", "Automotive & Energy",
+  "Travel & Hospitality", "Data & Analytics", "Networking & Security",
+  "SaaS & IT Service Management", "Other",
+]);
+
 // Position → category mapping by keyword
 const POSITION_KEYWORDS: [string, string][] = [
   ["sdet", "Test Engineering"],
