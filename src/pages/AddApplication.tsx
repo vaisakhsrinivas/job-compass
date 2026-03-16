@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AppLayout } from "@/components/AppLayout";
@@ -17,6 +17,9 @@ import { CalendarIcon, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { getCompanyDomain } from "@/components/companyDomains";
+import { getCompanyIcon } from "@/components/companyIcons";
+import { getIndustryIcon } from "@/components/industryIcons";
 
 const schema = z.object({
   company: z.string().trim().min(1, "Company is required").max(200),
@@ -31,6 +34,27 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
+
+function DetectedBadge({ company }: { company: string }) {
+  const domain = getCompanyDomain(company);
+  if (!domain) return null;
+
+  const companyIcon = getCompanyIcon(company);
+  const industryIcon = getIndustryIcon(domain);
+
+  return (
+    <div className="flex items-center gap-3 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2">
+      <img src={companyIcon} alt="" className="h-6 w-6 rounded-sm object-contain drop-shadow-sm" />
+      <div className="flex flex-col text-sm">
+        <span className="font-medium text-foreground">{company}</span>
+        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <img src={industryIcon} alt="" className="h-4 w-4 rounded-sm object-contain" />
+          {domain}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function AddApplication() {
   const { user } = useAuth();
@@ -52,8 +76,18 @@ export default function AddApplication() {
     },
   });
 
+  const watchedCompany = useWatch({ control: form.control, name: "company" });
+
   const onSubmit = async (values: FormValues) => {
     if (!user) return;
+
+    // Auto-add industry tag
+    const userTags = values.tags ? values.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
+    const domain = getCompanyDomain(values.company);
+    if (domain && !userTags.includes(domain)) {
+      userTags.push(domain);
+    }
+
     try {
       await createApp.mutateAsync({
         user_id: user.id,
@@ -62,7 +96,7 @@ export default function AddApplication() {
         status: values.status,
         date_applied: format(values.date_applied, "yyyy-MM-dd"),
         notes: values.notes || null,
-        tags: values.tags ? values.tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
+        tags: userTags,
         job_url: values.job_url || null,
         location: values.location || null,
         salary_range: values.salary_range || null,
@@ -90,6 +124,8 @@ export default function AddApplication() {
                   <FormMessage />
                 </FormItem>
               )} />
+
+              {watchedCompany && <DetectedBadge company={watchedCompany} />}
 
               <FormField control={form.control} name="position" render={({ field }) => (
                 <FormItem>

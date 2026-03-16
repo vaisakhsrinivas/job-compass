@@ -6,49 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import type { Application } from "@/hooks/useApplications";
 import { getIndustryIcon } from "@/components/industryIcons";
 import { getCompanyIcon } from "@/components/companyIcons";
-
-// Company → domain mapping
-const COMPANY_DOMAINS: Record<string, string> = {
-  google: "Search & Cloud",
-  meta: "Social Media",
-  openai: "AI / ML",
-  anthropic: "AI / ML",
-  amazon: "E-Commerce & Cloud",
-  walmart: "Retail",
-  oracle: "Enterprise Software",
-  dell: "Hardware & IT",
-  "dell technologies": "Hardware & IT",
-  microsoft: "Enterprise Software",
-  apple: "Consumer Electronics",
-  netflix: "Entertainment",
-  spotify: "Entertainment",
-  uber: "Mobility",
-  lyft: "Mobility",
-  stripe: "Fintech",
-  paypal: "Fintech",
-  salesforce: "Enterprise Software",
-  adobe: "Creative Software",
-  ibm: "Enterprise Software",
-  intel: "Hardware & IT",
-  nvidia: "Hardware & IT",
-  tesla: "Automotive & Energy",
-  twitter: "Social Media",
-  x: "Social Media",
-  linkedin: "Social Media",
-  snap: "Social Media",
-  tiktok: "Social Media",
-  bytedance: "Social Media",
-  airbnb: "Travel & Hospitality",
-  databricks: "AI / ML",
-  snowflake: "Data & Analytics",
-  palantir: "Data & Analytics",
-  coinbase: "Fintech",
-  robinhood: "Fintech",
-  shopify: "E-Commerce & Cloud",
-  cisco: "Networking & Security",
-  servicenow: "SaaS & IT Service Management",
-  "service now": "SaaS & IT Service Management",
-};
+import { COMPANY_DOMAINS } from "@/components/companyDomains";
 
 // Position → category mapping by keyword
 const POSITION_KEYWORDS: [string, string][] = [
