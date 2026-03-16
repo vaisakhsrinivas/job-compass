@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import type { Application } from "@/hooks/useApplications";
+import { getIndustryIcon } from "@/components/industryIcons";
 
 // Company → domain mapping
 const COMPANY_DOMAINS: Record<string, string> = {
@@ -97,9 +98,10 @@ interface TagPillProps {
   count: number;
   isActive?: boolean;
   onClick?: () => void;
+  icon?: string;
 }
 
-function TagPill({ label, count, isActive, onClick }: TagPillProps) {
+function TagPill({ label, count, isActive, onClick, icon }: TagPillProps) {
   return (
     <button
       onClick={onClick}
@@ -109,6 +111,9 @@ function TagPill({ label, count, isActive, onClick }: TagPillProps) {
           : "border-border bg-card text-foreground hover:border-accent/50 hover:bg-accent/10"
       }`}
     >
+      {icon && (
+        <img src={icon} alt="" className="h-5 w-5 object-contain" />
+      )}
       {label}
       <span
         className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-bold ${
@@ -213,6 +218,9 @@ export function ApplicationTagBreakdown({ applications }: Props) {
             <ChevronLeft className="h-4 w-4" />
           </Button>
         )}
+        {selectedDomain && (
+          <img src={getIndustryIcon(selectedDomain)} alt="" className="h-6 w-6 object-contain" />
+        )}
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -223,6 +231,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                 key={domain}
                 label={domain}
                 count={apps.length}
+                icon={getIndustryIcon(domain)}
                 onClick={() => setSelectedDomain(domain)}
               />
             ))}
