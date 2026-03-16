@@ -44,6 +44,7 @@ graph TD
 - **Application tracking** — Log company, position, salary range, location, and job URL for every application
 - **Status management** — Move applications through stages: Applied → Interview Scheduled → Offer / Rejected
 - **Tag system** — Organize applications with custom tags for easy filtering
+- **AI-powered industry detection** — Unknown companies are automatically categorized via an AI edge function (Gemini Flash Lite), so new entries are tagged correctly without manual input
 - **Industry & company categorization** — Auto-categorizes companies by industry domain (AI/ML, Fintech, etc.) with generated logos and drill-down navigation
 - **Position categorization** — Auto-groups positions by role type (Software Engineering, Test Engineering, Program Management, etc.)
 - **Secure & private** — Row-level security ensures each user can only see their own data
