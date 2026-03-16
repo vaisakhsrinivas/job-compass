@@ -23,6 +23,9 @@ graph TD
     end
 
     Client -->|"HTTPS / REST"| Cloud
+    AddApp -->|"invoke"| EdgeFn["categorize-company\n(Edge Function)"]
+    EdgeFn -->|"AI Gateway"| AI["Lovable AI\n(Gemini Flash Lite)"]
+    EdgeFn --> Cloud
 
     subgraph Cloud["Lovable Cloud"]
         Auth["Auth Service (email/pass)"]
