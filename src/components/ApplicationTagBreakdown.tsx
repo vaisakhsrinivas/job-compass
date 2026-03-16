@@ -130,6 +130,7 @@ interface Props {
 export function ApplicationTagBreakdown({ applications }: Props) {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
 
   // Group by company domain
   const domainGroups = new Map<string, Application[]>();
