@@ -1,6 +1,7 @@
 import { AppLayout } from "@/components/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useApplicationStats, useRecentApplications } from "@/hooks/useApplications";
+import { useApplicationStats, useRecentApplications, useApplications } from "@/hooks/useApplications";
+import { ApplicationTagBreakdown } from "@/components/ApplicationTagBreakdown";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FileText, Calendar, Clock, Loader2, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
@@ -50,6 +51,7 @@ function SegmentedProgress({ stats }: { stats: { applied: number; interviews: nu
 export default function Dashboard() {
   const { data: stats, isLoading: statsLoading } = useApplicationStats();
   const { data: recent, isLoading: recentLoading } = useRecentApplications();
+  const { data: allApps } = useApplications("all");
 
   if (statsLoading || recentLoading) {
     return (
@@ -104,6 +106,10 @@ export default function Dashboard() {
             <SegmentedProgress stats={s} />
           </CardContent>
         </Card>
+
+        {allApps && allApps.length > 0 && (
+          <ApplicationTagBreakdown applications={allApps} />
+        )}
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
