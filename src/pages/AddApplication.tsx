@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState, useEffect } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useCreateApplication } from "@/hooks/useApplications";
@@ -13,13 +14,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, Sparkles } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { getCompanyDomain } from "@/components/companyDomains";
 import { getCompanyIcon } from "@/components/companyIcons";
 import { getIndustryIcon } from "@/components/industryIcons";
+import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
   company: z.string().trim().min(1, "Company is required").max(200),
@@ -36,11 +38,51 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 function DetectedBadge({ company }: { company: string }) {
-  const domain = getCompanyDomain(company);
+  const [aiDomain, setAiDomain] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const staticDomain = getCompanyDomain(company);
+
+  useEffect(() => {
+    setAiDomain(null);
+    if (staticDomain || !company || company.trim().length < 2) return;
+
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("categorize-company", {
+          body: { company: company.trim() },
+        });
+        if (!error && data?.industry && data.industry !== "Other") {
+          setAiDomain(data.industry);
+        }
+      } catch {
+        // silently fall back
+      } finally {
+        setLoading(false);
+      }
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [company, staticDomain]);
+
+  const domain = staticDomain || aiDomain;
+  if (!domain && !loading) return null;
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-sm text-muted-foreground">
+        <Sparkles className="h-4 w-4 animate-pulse" />
+        Detecting industry…
+      </div>
+    );
+  }
+
   if (!domain) return null;
 
   const companyIcon = getCompanyIcon(company);
   const industryIcon = getIndustryIcon(domain);
+  const isAi = !staticDomain && !!aiDomain;
 
   return (
     <div className="flex items-center gap-3 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2">
@@ -50,6 +92,7 @@ function DetectedBadge({ company }: { company: string }) {
         <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <img src={industryIcon} alt="" className="h-4 w-4 rounded-sm object-contain" />
           {domain}
+          {isAi && <Sparkles className="ml-1 h-3 w-3 text-accent" />}
         </span>
       </div>
     </div>
@@ -83,7 +126,22 @@ export default function AddApplication() {
 
     // Auto-add industry tag
     const userTags = values.tags ? values.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
-    const domain = getCompanyDomain(values.company);
+    let domain = getCompanyDomain(values.company);
+
+    // If not in static mapping, ask AI
+    if (!domain) {
+      try {
+        const { data } = await supabase.functions.invoke("categorize-company", {
+          body: { company: values.company.trim() },
+        });
+        if (data?.industry && data.industry !== "Other") {
+          domain = data.industry;
+        }
+      } catch {
+        // proceed without AI tag
+      }
+    }
+
     if (domain && !userTags.includes(domain)) {
       userTags.push(domain);
     }

@@ -1,1 +1,4 @@
 project_id = "dpwzgiednyxgtemmagrk"
+
+[functions.categorize-company]
+verify_jwt = false
