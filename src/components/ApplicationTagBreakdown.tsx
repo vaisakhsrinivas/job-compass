@@ -118,7 +118,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
   // Group by company domain
   const domainGroups = new Map<string, Application[]>();
   for (const app of applications) {
-    const domain = getCompanyDomain(app.company);
+    const domain = getCompanyDomainFromApp(app);
     if (!domainGroups.has(domain)) domainGroups.set(domain, []);
     domainGroups.get(domain)!.push(app);
   }
