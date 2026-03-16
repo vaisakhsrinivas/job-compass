@@ -98,9 +98,10 @@ interface TagPillProps {
   count: number;
   isActive?: boolean;
   onClick?: () => void;
+  icon?: string;
 }
 
-function TagPill({ label, count, isActive, onClick }: TagPillProps) {
+function TagPill({ label, count, isActive, onClick, icon }: TagPillProps) {
   return (
     <button
       onClick={onClick}
@@ -110,6 +111,9 @@ function TagPill({ label, count, isActive, onClick }: TagPillProps) {
           : "border-border bg-card text-foreground hover:border-accent/50 hover:bg-accent/10"
       }`}
     >
+      {icon && (
+        <img src={icon} alt="" className="h-5 w-5 object-contain" />
+      )}
       {label}
       <span
         className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-bold ${
