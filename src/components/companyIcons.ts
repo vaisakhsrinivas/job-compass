@@ -32,6 +32,7 @@ import coinbase from "@/assets/icons/companies/coinbase.png";
 import robinhood from "@/assets/icons/companies/robinhood.png";
 import shopify from "@/assets/icons/companies/shopify.png";
 import cisco from "@/assets/icons/companies/cisco.png";
+import servicenow from "@/assets/icons/companies/servicenow.png";
 import otherIcon from "@/assets/icons/other.png";
 
 const COMPANY_ICONS: Record<string, string> = {
@@ -72,6 +73,8 @@ const COMPANY_ICONS: Record<string, string> = {
   robinhood,
   shopify,
   cisco,
+  servicenow,
+  "service now": servicenow,
 };
 
 export function getCompanyIcon(company: string): string {

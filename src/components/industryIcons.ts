@@ -14,6 +14,7 @@ import automotiveEnergy from "@/assets/icons/automotive-energy.png";
 import travelHospitality from "@/assets/icons/travel-hospitality.png";
 import dataAnalytics from "@/assets/icons/data-analytics.png";
 import networkingSecurity from "@/assets/icons/networking-security.png";
+import saasItsm from "@/assets/icons/saas-itsm.png";
 import other from "@/assets/icons/other.png";
 
 export const INDUSTRY_ICONS: Record<string, string> = {
@@ -33,6 +34,7 @@ export const INDUSTRY_ICONS: Record<string, string> = {
   "Travel & Hospitality": travelHospitality,
   "Data & Analytics": dataAnalytics,
   "Networking & Security": networkingSecurity,
+  "SaaS & IT Service Management": saasItsm,
   "Other": other,
 };
 
