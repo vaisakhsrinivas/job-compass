@@ -31,6 +31,7 @@ import palantir from "@/assets/icons/companies/palantir.png";
 import coinbase from "@/assets/icons/companies/coinbase.png";
 import robinhood from "@/assets/icons/companies/robinhood.png";
 import shopify from "@/assets/icons/companies/shopify.png";
+import cisco from "@/assets/icons/companies/cisco.png";
 import otherIcon from "@/assets/icons/other.png";
 
 const COMPANY_ICONS: Record<string, string> = {
