@@ -23,6 +23,9 @@ graph TD
     end
 
     Client -->|"HTTPS / REST"| Cloud
+    AddApp -->|"invoke"| EdgeFn["categorize-company\n(Edge Function)"]
+    EdgeFn -->|"AI Gateway"| AI["Lovable AI\n(Gemini Flash Lite)"]
+    EdgeFn --> Cloud
 
     subgraph Cloud["Lovable Cloud"]
         Auth["Auth Service (email/pass)"]
@@ -41,6 +44,7 @@ graph TD
 - **Application tracking** — Log company, position, salary range, location, and job URL for every application
 - **Status management** — Move applications through stages: Applied → Interview Scheduled → Offer / Rejected
 - **Tag system** — Organize applications with custom tags for easy filtering
+- **AI-powered industry detection** — Unknown companies are automatically categorized via an AI edge function (Gemini Flash Lite), so new entries are tagged correctly without manual input
 - **Industry & company categorization** — Auto-categorizes companies by industry domain (AI/ML, Fintech, etc.) with generated logos and drill-down navigation
 - **Position categorization** — Auto-groups positions by role type (Software Engineering, Test Engineering, Program Management, etc.)
 - **Secure & private** — Row-level security ensures each user can only see their own data
@@ -88,12 +92,15 @@ src/
 │   ├── ApplicationTagBreakdown.tsx  # 3-level drill-down: Industry → Company → Positions
 │   ├── NavLink.tsx          # Navigation link component
 │   ├── StatusBadge.tsx      # Application status indicator
-│   ├── industryIcons.ts     # Industry domain → icon mapping
-│   └── companyIcons.ts      # Company name → logo mapping
+│   ├── companyDomains.ts    # Company → industry domain mapping (shared lookup)
+│   ├── companyIcons.ts      # Company name → logo mapping
+│   └── industryIcons.ts     # Industry domain → icon mapping
 ├── hooks/
 │   ├── useApplications.tsx  # CRUD operations for job applications
 │   ├── useAuth.tsx          # Authentication state management
-│   └── use-mobile.tsx       # Responsive breakpoint detection
+│   ├── useTheme.tsx         # Dark/light theme toggle
+│   ├── use-mobile.tsx       # Responsive breakpoint detection
+│   └── use-toast.ts         # Toast notification hook
 ├── integrations/
 │   └── supabase/            # Auto-generated client and types
 ├── lib/
@@ -101,13 +108,18 @@ src/
 ├── pages/
 │   ├── Auth.tsx             # Login / Sign-up page
 │   ├── Dashboard.tsx        # Overview with metrics, charts, and tag breakdown
-│   ├── AddApplication.tsx   # New application form
+│   ├── AddApplication.tsx   # New application form with AI industry detection
 │   ├── Applications.tsx     # Application list with filters
 │   ├── ResetPassword.tsx    # Password recovery
 │   └── NotFound.tsx         # 404 page
 ├── App.tsx                  # Routes and providers
 ├── main.tsx                 # Entry point
 └── index.css                # Design tokens and global styles
+
+supabase/
+└── functions/
+    └── categorize-company/  # Edge function: AI-powered industry classification
+        └── index.ts         # Calls Lovable AI (Gemini Flash Lite) to categorize unknown companies
 ```
 
 ## What I Learned
