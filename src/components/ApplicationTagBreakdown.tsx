@@ -279,7 +279,17 @@ export function ApplicationTagBreakdown({ applications }: Props) {
               </p>
               <div className="flex flex-wrap gap-2">
                 {sortedPositions.map(([cat, apps]) => (
-                  <TagPill key={cat} label={cat} count={apps.length} />
+                  <TagPill
+                    key={cat}
+                    label={cat}
+                    count={apps.length}
+                    isActive={selectedPosition === cat}
+                    onClick={() =>
+                      setSelectedPosition(
+                        selectedPosition === cat ? null : cat
+                      )
+                    }
+                  />
                 ))}
               </div>
             </div>
