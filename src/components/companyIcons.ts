@@ -71,6 +71,7 @@ const COMPANY_ICONS: Record<string, string> = {
   coinbase,
   robinhood,
   shopify,
+  cisco,
 };
 
 export function getCompanyIcon(company: string): string {
