@@ -126,7 +126,22 @@ export default function AddApplication() {
 
     // Auto-add industry tag
     const userTags = values.tags ? values.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
-    const domain = getCompanyDomain(values.company);
+    let domain = getCompanyDomain(values.company);
+
+    // If not in static mapping, ask AI
+    if (!domain) {
+      try {
+        const { data } = await supabase.functions.invoke("categorize-company", {
+          body: { company: values.company.trim() },
+        });
+        if (data?.industry && data.industry !== "Other") {
+          domain = data.industry;
+        }
+      } catch {
+        // proceed without AI tag
+      }
+    }
+
     if (domain && !userTags.includes(domain)) {
       userTags.push(domain);
     }
