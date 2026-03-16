@@ -46,6 +46,8 @@ const COMPANY_DOMAINS: Record<string, string> = {
   robinhood: "Fintech",
   shopify: "E-Commerce & Cloud",
   cisco: "Networking & Security",
+  servicenow: "SaaS & IT Service Management",
+  "service now": "SaaS & IT Service Management",
 };
 
 // Position → category mapping by keyword
