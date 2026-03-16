@@ -277,6 +277,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                     key={company}
                     label={company}
                     count={count}
+                    icon={getCompanyIcon(company)}
                     onClick={() => setSelectedCompany(company)}
                   />
                 ))}
