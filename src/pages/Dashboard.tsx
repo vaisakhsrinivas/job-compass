@@ -51,6 +51,7 @@ function SegmentedProgress({ stats }: { stats: { applied: number; interviews: nu
 export default function Dashboard() {
   const { data: stats, isLoading: statsLoading } = useApplicationStats();
   const { data: recent, isLoading: recentLoading } = useRecentApplications();
+  const { data: allApps } = useApplications("all");
 
   if (statsLoading || recentLoading) {
     return (
