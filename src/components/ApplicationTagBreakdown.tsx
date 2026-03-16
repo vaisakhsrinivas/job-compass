@@ -223,7 +223,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
           </Button>
         )}
         {selectedDomain && (
-          <img src={getIndustryIcon(selectedDomain)} alt="" className="h-6 w-6 object-contain" />
+          <img src={getIndustryIcon(selectedDomain)} alt="" className="h-8 w-8 rounded-sm object-contain drop-shadow-sm" />
         )}
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
