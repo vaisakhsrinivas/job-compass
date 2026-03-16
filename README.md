@@ -128,6 +128,7 @@ supabase/
    - How to efficiently use the prompt has been the primary learning.
    - Modifying the project and understanding the file changes happening.
    - Creating a good readme file and how to implement a good architectural diagram within readme file.
+   - Use LLM to add features like auto-tagging, logos etc
 
 2. Understanding the tech stack - certainly a lot to learn here !!!
 3. Learn more !!!!
