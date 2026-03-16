@@ -218,6 +218,9 @@ export function ApplicationTagBreakdown({ applications }: Props) {
             <ChevronLeft className="h-4 w-4" />
           </Button>
         )}
+        {selectedDomain && (
+          <img src={getIndustryIcon(selectedDomain)} alt="" className="h-6 w-6 object-contain" />
+        )}
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
