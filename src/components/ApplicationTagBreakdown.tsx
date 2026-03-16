@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import type { Application } from "@/hooks/useApplications";
+import { getIndustryIcon } from "@/components/industryIcons";
 
 // Company → domain mapping
 const COMPANY_DOMAINS: Record<string, string> = {
