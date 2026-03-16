@@ -39,6 +39,8 @@ export const COMPANY_DOMAINS: Record<string, string> = {
   cisco: "Networking & Security",
   servicenow: "SaaS & IT Service Management",
   "service now": "SaaS & IT Service Management",
+  docusign: "SaaS & IT Service Management",
+  sonos: "Consumer Electronics",
 };
 
 export function getCompanyDomain(company: string): string | undefined {
