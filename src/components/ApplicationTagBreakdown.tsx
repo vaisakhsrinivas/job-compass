@@ -130,6 +130,7 @@ interface Props {
 export function ApplicationTagBreakdown({ applications }: Props) {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
 
   // Group by company domain
   const domainGroups = new Map<string, Application[]>();
@@ -158,10 +159,15 @@ export function ApplicationTagBreakdown({ applications }: Props) {
     (a, b) => b[1].length - a[1].length
   );
 
-  // Company-level breakdown for selected domain
+  // Company-level breakdown for selected domain, filtered by position category
   const companyGroups = new Map<string, number>();
   if (selectedDomain) {
-    const domainApps = domainGroups.get(selectedDomain) ?? [];
+    let domainApps = domainGroups.get(selectedDomain) ?? [];
+    if (selectedPosition) {
+      domainApps = domainApps.filter(
+        (app) => getPositionCategory(app.position) === selectedPosition
+      );
+    }
     for (const app of domainApps) {
       companyGroups.set(app.company, (companyGroups.get(app.company) ?? 0) + 1);
     }
@@ -179,6 +185,8 @@ export function ApplicationTagBreakdown({ applications }: Props) {
   const handleBack = () => {
     if (selectedCompany) {
       setSelectedCompany(null);
+    } else if (selectedPosition) {
+      setSelectedPosition(null);
     } else {
       setSelectedDomain(null);
     }
@@ -186,9 +194,11 @@ export function ApplicationTagBreakdown({ applications }: Props) {
 
   const title = selectedCompany
     ? `${selectedCompany} — Positions`
-    : selectedDomain
-      ? `${selectedDomain} — Breakdown`
-      : "Applications by Industry";
+    : selectedPosition
+      ? `${selectedDomain} — ${selectedPosition}`
+      : selectedDomain
+        ? `${selectedDomain} — Breakdown`
+        : "Applications by Industry";
 
   return (
     <Card>
@@ -269,7 +279,17 @@ export function ApplicationTagBreakdown({ applications }: Props) {
               </p>
               <div className="flex flex-wrap gap-2">
                 {sortedPositions.map(([cat, apps]) => (
-                  <TagPill key={cat} label={cat} count={apps.length} />
+                  <TagPill
+                    key={cat}
+                    label={cat}
+                    count={apps.length}
+                    isActive={selectedPosition === cat}
+                    onClick={() =>
+                      setSelectedPosition(
+                        selectedPosition === cat ? null : cat
+                      )
+                    }
+                  />
                 ))}
               </div>
             </div>
