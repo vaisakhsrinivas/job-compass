@@ -107,6 +107,10 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
+        {allApps && allApps.length > 0 && (
+          <ApplicationTagBreakdown applications={allApps} />
+        )}
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-base">Recent Activity</CardTitle>
