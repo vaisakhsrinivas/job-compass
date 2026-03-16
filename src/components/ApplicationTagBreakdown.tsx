@@ -45,6 +45,7 @@ const COMPANY_DOMAINS: Record<string, string> = {
   coinbase: "Fintech",
   robinhood: "Fintech",
   shopify: "E-Commerce & Cloud",
+  cisco: "Networking & Security",
 };
 
 // Position → category mapping by keyword
