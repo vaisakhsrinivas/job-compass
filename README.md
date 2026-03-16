@@ -73,30 +73,41 @@ To connect a custom domain, go to **Project → Settings → Domains → Connect
 
 ```
 src/
-├── assets/              # Logo and static images
+├── assets/
+│   ├── icons/
+│   │   ├── companies/       # AI-generated company logos (Google, Meta, etc.)
+│   │   ├── search-cloud.png # Industry icons for each domain category
+│   │   ├── ai-ml.png
+│   │   ├── fintech.png
+│   │   ├── ...              # (16 industry icons total)
+│   │   └── other.png        # Fallback icon for uncategorized entries
+│   └── logo.png             # App brand logo
 ├── components/
-│   ├── ui/              # shadcn/ui primitives (Button, Card, Dialog, etc.)
-│   ├── AppLayout.tsx    # Navbar and page wrapper
-│   ├── NavLink.tsx      # Navigation link component
-│   └── StatusBadge.tsx  # Application status indicator
+│   ├── ui/                  # shadcn/ui primitives (Button, Card, Dialog, etc.)
+│   ├── AppLayout.tsx        # Navbar and page wrapper
+│   ├── ApplicationTagBreakdown.tsx  # 3-level drill-down: Industry → Company → Positions
+│   ├── NavLink.tsx          # Navigation link component
+│   ├── StatusBadge.tsx      # Application status indicator
+│   ├── industryIcons.ts     # Industry domain → icon mapping
+│   └── companyIcons.ts      # Company name → logo mapping
 ├── hooks/
 │   ├── useApplications.tsx  # CRUD operations for job applications
 │   ├── useAuth.tsx          # Authentication state management
 │   └── use-mobile.tsx       # Responsive breakpoint detection
 ├── integrations/
-│   └── supabase/        # Auto-generated client and types
+│   └── supabase/            # Auto-generated client and types
 ├── lib/
-│   └── utils.ts         # Shared utility functions
+│   └── utils.ts             # Shared utility functions
 ├── pages/
-│   ├── Auth.tsx         # Login / Sign-up page
-│   ├── Dashboard.tsx    # Overview with metrics and charts
+│   ├── Auth.tsx             # Login / Sign-up page
+│   ├── Dashboard.tsx        # Overview with metrics, charts, and tag breakdown
 │   ├── AddApplication.tsx   # New application form
 │   ├── Applications.tsx     # Application list with filters
 │   ├── ResetPassword.tsx    # Password recovery
-│   └── NotFound.tsx     # 404 page
-├── App.tsx              # Routes and providers
-├── main.tsx             # Entry point
-└── index.css            # Design tokens and global styles
+│   └── NotFound.tsx         # 404 page
+├── App.tsx                  # Routes and providers
+├── main.tsx                 # Entry point
+└── index.css                # Design tokens and global styles
 ```
 
 ## What I Learned
