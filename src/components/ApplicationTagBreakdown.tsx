@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import type { Application } from "@/hooks/useApplications";
 import { getIndustryIcon } from "@/components/industryIcons";
+import { getCompanyIcon } from "@/components/companyIcons";
 
 // Company → domain mapping
 const COMPANY_DOMAINS: Record<string, string> = {
@@ -276,6 +277,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                     key={company}
                     label={company}
                     count={count}
+                    icon={getCompanyIcon(company)}
                     onClick={() => setSelectedCompany(company)}
                   />
                 ))}
