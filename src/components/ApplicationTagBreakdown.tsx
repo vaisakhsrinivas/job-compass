@@ -116,7 +116,7 @@ function TagPill({ label, count, isActive, onClick, icon }: TagPillProps) {
       }`}
     >
       {icon && (
-        <img src={icon} alt="" className="h-5 w-5 object-contain" />
+        <img src={icon} alt="" className="h-7 w-7 rounded-sm object-contain drop-shadow-sm" />
       )}
       {label}
       <span
