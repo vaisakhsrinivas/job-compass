@@ -228,6 +228,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                 key={domain}
                 label={domain}
                 count={apps.length}
+                icon={getIndustryIcon(domain)}
                 onClick={() => setSelectedDomain(domain)}
               />
             ))}
