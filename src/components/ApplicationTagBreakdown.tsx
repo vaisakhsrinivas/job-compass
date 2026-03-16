@@ -50,9 +50,17 @@ const POSITION_KEYWORDS: [string, string][] = [
   ["ui", "Design"],
 ];
 
-function getCompanyDomain(company: string): string {
-  const key = company.toLowerCase().trim();
-  return COMPANY_DOMAINS[key] ?? "Other";
+function getCompanyDomainFromApp(app: Application): string {
+  const key = app.company.toLowerCase().trim();
+  const staticDomain = COMPANY_DOMAINS[key];
+  if (staticDomain) return staticDomain;
+  // Fall back to tags — use the first tag that matches a valid industry
+  if (app.tags) {
+    for (const tag of app.tags) {
+      if (VALID_INDUSTRIES.has(tag)) return tag;
+    }
+  }
+  return "Other";
 }
 
 function getPositionCategory(position: string): string {
