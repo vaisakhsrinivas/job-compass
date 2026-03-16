@@ -129,6 +129,7 @@ interface Props {
 
 export function ApplicationTagBreakdown({ applications }: Props) {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
 
   // Group by company domain
   const domainGroups = new Map<string, Application[]>();
@@ -138,7 +139,6 @@ export function ApplicationTagBreakdown({ applications }: Props) {
     domainGroups.get(domain)!.push(app);
   }
 
-  // Sort domains by count descending
   const sortedDomains = [...domainGroups.entries()].sort(
     (a, b) => b[1].length - a[1].length
   );
@@ -171,27 +171,42 @@ export function ApplicationTagBreakdown({ applications }: Props) {
     (a, b) => b[1] - a[1]
   );
 
+  // Positions for selected company
+  const companyPositions = selectedCompany
+    ? applications.filter((a) => a.company === selectedCompany)
+    : [];
+
+  const handleBack = () => {
+    if (selectedCompany) {
+      setSelectedCompany(null);
+    } else {
+      setSelectedDomain(null);
+    }
+  };
+
+  const title = selectedCompany
+    ? `${selectedCompany} — Positions`
+    : selectedDomain
+      ? `${selectedDomain} — Breakdown`
+      : "Applications by Industry";
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 pb-3">
-        {selectedDomain && (
+        {(selectedDomain || selectedCompany) && (
           <Button
             variant="ghost"
             size="icon"
             className="h-7 w-7"
-            onClick={() => setSelectedDomain(null)}
+            onClick={handleBack}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
         )}
-        <CardTitle className="text-base">
-          {selectedDomain
-            ? `${selectedDomain} — Breakdown`
-            : "Applications by Industry"}
-        </CardTitle>
+        <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {!selectedDomain ? (
+        {!selectedDomain && !selectedCompany ? (
           <div className="flex flex-wrap gap-2">
             {sortedDomains.map(([domain, apps]) => (
               <TagPill
@@ -202,26 +217,52 @@ export function ApplicationTagBreakdown({ applications }: Props) {
               />
             ))}
           </div>
+        ) : selectedCompany ? (
+          <div className="space-y-2">
+            {companyPositions.map((app) => (
+              <div
+                key={app.id}
+                className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-muted/50"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium">{app.position}</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {app.status.replace("_", " ")}
+                    </Badge>
+                    {app.location && (
+                      <span className="text-xs text-muted-foreground">
+                        {app.location}
+                      </span>
+                    )}
+                    {app.salary_range && (
+                      <span className="text-xs text-muted-foreground">
+                        · {app.salary_range}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <>
-            {/* Companies in this domain */}
             <div>
               <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Companies
               </p>
               <div className="flex flex-wrap gap-2">
                 {sortedCompanies.map(([company, count]) => (
-                  <Badge key={company} variant="secondary" className="gap-1.5 text-sm">
-                    {company}
-                    <span className="rounded-full bg-muted-foreground/20 px-1.5 text-xs">
-                      {count}
-                    </span>
-                  </Badge>
+                  <TagPill
+                    key={company}
+                    label={company}
+                    count={count}
+                    onClick={() => setSelectedCompany(company)}
+                  />
                 ))}
               </div>
             </div>
 
-            {/* Position categories */}
             <div>
               <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Position Categories
