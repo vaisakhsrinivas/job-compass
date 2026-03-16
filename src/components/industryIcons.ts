@@ -34,6 +34,7 @@ export const INDUSTRY_ICONS: Record<string, string> = {
   "Travel & Hospitality": travelHospitality,
   "Data & Analytics": dataAnalytics,
   "Networking & Security": networkingSecurity,
+  "SaaS & IT Service Management": saasItsm,
   "Other": other,
 };
 

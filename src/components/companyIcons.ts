@@ -73,6 +73,8 @@ const COMPANY_ICONS: Record<string, string> = {
   robinhood,
   shopify,
   cisco,
+  servicenow,
+  "service now": servicenow,
 };
 
 export function getCompanyIcon(company: string): string {
