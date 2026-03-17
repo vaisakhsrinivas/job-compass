@@ -84,9 +84,9 @@ export default function Applications() {
             className="gap-2"
             disabled={!filtered.length}
             onClick={() => {
-              const header = "Company,Position,Status,Date Applied,Last Updated\n";
+              const header = "Company,Position,Status,Date Applied,Last Updated,Notes,Job URL\n";
               const rows = filtered.map((a) =>
-                `"${a.company.replace(/"/g, '""')}","${a.position.replace(/"/g, '""')}","${a.status}","${format(new Date(a.date_applied), "yyyy-MM-dd")}","${format(new Date(a.updated_at), "yyyy-MM-dd")}"`
+                `"${a.company.replace(/"/g, '""')}","${a.position.replace(/"/g, '""')}","${a.status}","${format(new Date(a.date_applied), "yyyy-MM-dd")}","${format(new Date(a.updated_at), "yyyy-MM-dd")}","${(a.notes ?? "").replace(/"/g, '""')}","${a.job_url ?? ""}"`
               ).join("\n");
               const blob = new Blob([header + rows], { type: "text/csv" });
               const url = URL.createObjectURL(blob);
