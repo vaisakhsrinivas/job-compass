@@ -47,6 +47,9 @@ graph TD
 - **AI-powered industry detection** — Unknown companies are automatically categorized via an AI edge function (Gemini Flash Lite), so new entries are tagged correctly without manual input
 - **Industry & company categorization** — Auto-categorizes companies by industry domain (AI/ML, Fintech, etc.) with generated logos and drill-down navigation
 - **Position categorization** — Auto-groups positions by role type (Software Engineering, Test Engineering, Program Management, etc.)
+- **CSV export** — Export your filtered application list (company, position, status, dates, notes, job URL) to a CSV file for offline use or sharing
+- **Dark / light theme** — Toggle between dark and light modes for comfortable viewing
+- **Responsive design** — Fully usable on desktop, tablet, and mobile with a collapsible navigation menu
 - **Secure & private** — Row-level security ensures each user can only see their own data
 - **Email authentication** — Sign up, log in, and reset your password securely
 
