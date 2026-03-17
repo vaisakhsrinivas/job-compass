@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Loader2, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { Search, Loader2, Pencil, Trash2, ExternalLink, Download } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
@@ -76,7 +76,31 @@ export default function Applications() {
   return (
     <AppLayout>
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold tracking-tight">Applications</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold tracking-tight">Applications</h1>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={!filtered.length}
+            onClick={() => {
+              const header = "Company,Position,Status\n";
+              const rows = filtered.map((a) =>
+                `"${a.company.replace(/"/g, '""')}","${a.position.replace(/"/g, '""')}","${a.status}"`
+              ).join("\n");
+              const blob = new Blob([header + rows], { type: "text/csv" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = "applications.csv";
+              link.click();
+              URL.revokeObjectURL(url);
+            }}
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
