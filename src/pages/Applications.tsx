@@ -12,7 +12,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Loader2, Pencil, Trash2, ExternalLink, Download } from "lucide-react";
+import { Search, Loader2, Pencil, Trash2, ExternalLink, Download, X } from "lucide-react";
+import { getPositionCategory } from "@/components/positionCategories";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
