@@ -1,5 +1,7 @@
 // Position → category mapping by keyword (order matters: first match wins)
-const POSITION_KEYWORDS: [string, string][] = [
+// Each entry: [pattern, category, exact?]
+// If exact is true, match as a whole word (word-boundary); otherwise substring match.
+const POSITION_KEYWORDS: [string, string, boolean?][] = [
   ["sdet", "Test Engineering"],
   ["software development engineer in test", "Test Engineering"],
   ["quality", "Test Engineering"],
@@ -16,7 +18,7 @@ const POSITION_KEYWORDS: [string, string][] = [
   ["ml engineer", "Machine Learning"],
   ["devops", "DevOps / SRE"],
   ["site reliability", "DevOps / SRE"],
-  ["sre", "DevOps / SRE"],
+  ["sre", "DevOps / SRE", true],
   ["frontend", "Frontend Engineering"],
   ["front-end", "Frontend Engineering"],
   ["backend", "Backend Engineering"],
@@ -24,11 +26,11 @@ const POSITION_KEYWORDS: [string, string][] = [
   ["full stack", "Full Stack Engineering"],
   ["fullstack", "Full Stack Engineering"],
   ["software", "Software Engineering"],
-  ["sse", "Software Engineering"],
+  ["sse", "Software Engineering", true],
   ["senior se", "Software Engineering"],
   ["engineer", "Software Engineering"],
   ["developer", "Software Engineering"],
-  ["se", "Software Engineering"],
+  ["se", "Software Engineering", true],
   ["architect", "Architecture"],
   ["designer", "Design"],
   ["ux", "Design"],
@@ -37,8 +39,13 @@ const POSITION_KEYWORDS: [string, string][] = [
 
 export function getPositionCategory(position: string): string | null {
   const lower = position.toLowerCase();
-  for (const [keyword, category] of POSITION_KEYWORDS) {
-    if (lower.includes(keyword)) return category;
+  for (const [keyword, category, exact] of POSITION_KEYWORDS) {
+    if (exact) {
+      const regex = new RegExp(`\\b${keyword}\\b`, "i");
+      if (regex.test(lower)) return category;
+    } else {
+      if (lower.includes(keyword)) return category;
+    }
   }
   return null;
 }
