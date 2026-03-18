@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { useApplications, useDeleteApplication, useUpdateApplication, type Application, type ApplicationStatus } from "@/hooks/useApplications";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,11 +12,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Loader2, Pencil, Trash2, ExternalLink, Download } from "lucide-react";
+import { Search, Loader2, Pencil, Trash2, ExternalLink, Download, X } from "lucide-react";
+import { getPositionCategory } from "@/components/positionCategories";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
 export default function Applications() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const positionCategory = searchParams.get("position_category");
+
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">("all");
   const [search, setSearch] = useState("");
   const [editApp, setEditApp] = useState<Application | null>(null);
@@ -26,11 +31,20 @@ export default function Applications() {
   const deleteApp = useDeleteApplication();
   const updateApp = useUpdateApplication();
 
-  const filtered = (applications ?? []).filter(
-    (a) =>
+  const filtered = (applications ?? []).filter((a) => {
+    const matchesSearch =
       a.company.toLowerCase().includes(search.toLowerCase()) ||
-      a.position.toLowerCase().includes(search.toLowerCase())
-  );
+      a.position.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = positionCategory
+      ? getPositionCategory(a.position) === positionCategory
+      : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  const clearPositionFilter = () => {
+    searchParams.delete("position_category");
+    setSearchParams(searchParams);
+  };
 
   const handleDelete = async () => {
     if (!deleteId) return;
@@ -125,6 +139,20 @@ export default function Applications() {
             </SelectContent>
           </Select>
         </div>
+
+        {positionCategory && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Filtered by:</span>
+            <button
+              onClick={clearPositionFilter}
+              className="inline-flex items-center gap-1.5 rounded-full border border-accent bg-accent/10 px-3 py-1 text-sm font-medium text-foreground transition-colors hover:bg-accent/20"
+            >
+              {positionCategory}
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )}
+
 
         {isLoading ? (
           <div className="flex h-32 items-center justify-center">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -74,6 +75,8 @@ interface Props {
 }
 
 export function ApplicationTagBreakdown({ applications }: Props) {
+  const navigate = useNavigate();
+
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
@@ -235,11 +238,9 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                     label={cat}
                     count={apps.length}
                     isActive={selectedPosition === cat}
-                    onClick={() =>
-                      setSelectedPosition(
-                        selectedPosition === cat ? null : cat
-                      )
-                    }
+                    onClick={() => {
+                      navigate(`/applications?position_category=${encodeURIComponent(cat)}`);
+                    }}
                   />
                 ))}
               </div>
