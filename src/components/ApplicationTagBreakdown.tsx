@@ -16,13 +16,12 @@ const VALID_INDUSTRIES = new Set([
   "SaaS & IT Service Management", "Other",
 ]);
 
-import { getPositionCategory as getPositionCategoryUtil } from "@/components/positionCategories";
+import { getPositionCategory as getPositionCategoryShared } from "@/components/positionCategories";
 
 function getCompanyDomainFromApp(app: Application): string {
   const key = app.company.toLowerCase().trim();
   const staticDomain = COMPANY_DOMAINS[key];
   if (staticDomain) return staticDomain;
-  // Fall back to tags — use the first tag that matches a valid industry
   if (app.tags) {
     for (const tag of app.tags) {
       if (VALID_INDUSTRIES.has(tag)) return tag;
@@ -32,11 +31,7 @@ function getCompanyDomainFromApp(app: Application): string {
 }
 
 function getPositionCategory(position: string): string {
-  const lower = position.toLowerCase();
-  for (const [keyword, category] of POSITION_KEYWORDS) {
-    if (lower.includes(keyword)) return category;
-  }
-  return "Other";
+  return getPositionCategoryShared(position) ?? "Other";
 }
 
 interface TagPillProps {
