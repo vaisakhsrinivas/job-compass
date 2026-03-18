@@ -238,11 +238,9 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                     label={cat}
                     count={apps.length}
                     isActive={selectedPosition === cat}
-                    onClick={() =>
-                      setSelectedPosition(
-                        selectedPosition === cat ? null : cat
-                      )
-                    }
+                    onClick={() => {
+                      navigate(`/applications?position_category=${encodeURIComponent(cat)}`);
+                    }}
                   />
                 ))}
               </div>
