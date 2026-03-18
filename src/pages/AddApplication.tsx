@@ -147,6 +147,12 @@ export default function AddApplication() {
       userTags.push(domain);
     }
 
+    // Auto-add position category tag
+    const positionCat = getPositionCategory(values.position);
+    if (positionCat && !userTags.includes(positionCat)) {
+      userTags.push(positionCat);
+    }
+
     try {
       await createApp.mutateAsync({
         user_id: user.id,
