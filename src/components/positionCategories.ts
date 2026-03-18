@@ -2,7 +2,9 @@
 // Each entry: [pattern, category, exact?]
 // If exact is true, match as a whole word (word-boundary); otherwise substring match.
 const POSITION_KEYWORDS: [string, string, boolean?][] = [
-  ["sdet", "Test Engineering"],
+  ["ssdet", "Test Engineering", true],
+  ["senior sdet", "Test Engineering"],
+  ["sdet", "Test Engineering", true],
   ["software development engineer in test", "Test Engineering"],
   ["quality", "Test Engineering"],
   ["qa", "Test Engineering"],
