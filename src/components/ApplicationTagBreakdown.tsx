@@ -93,46 +93,47 @@ export function ApplicationTagBreakdown({ applications }: Props) {
     (a, b) => b[1].length - a[1].length
   );
 
-  // Position categories for selected domain
-  const positionGroups = new Map<string, Application[]>();
-  if (selectedDomain) {
-    const domainApps = domainGroups.get(selectedDomain) ?? [];
-    for (const app of domainApps) {
-      const cat = getPositionCategory(app.position);
-      if (!positionGroups.has(cat)) positionGroups.set(cat, []);
-      positionGroups.get(cat)!.push(app);
-    }
-  }
+  // Get domain apps, filtered by selected company if any
+  const domainApps = selectedDomain ? (domainGroups.get(selectedDomain) ?? []) : [];
+  const companyFilteredApps = selectedCompany
+    ? domainApps.filter((a) => a.company === selectedCompany)
+    : domainApps;
+  const positionFilteredApps = selectedPosition
+    ? domainApps.filter((a) => getPositionCategory(a.position) === selectedPosition)
+    : domainApps;
 
+  // Position categories - filtered by selected company
+  const positionGroups = new Map<string, Application[]>();
+  for (const app of companyFilteredApps) {
+    const cat = getPositionCategory(app.position);
+    if (!positionGroups.has(cat)) positionGroups.set(cat, []);
+    positionGroups.get(cat)!.push(app);
+  }
   const sortedPositions = [...positionGroups.entries()].sort(
     (a, b) => b[1].length - a[1].length
   );
 
-  // Company-level breakdown for selected domain, filtered by position category
+  // Company groups - filtered by selected position category
   const companyGroups = new Map<string, number>();
-  if (selectedDomain) {
-    let domainApps = domainGroups.get(selectedDomain) ?? [];
-    if (selectedPosition) {
-      domainApps = domainApps.filter(
-        (app) => getPositionCategory(app.position) === selectedPosition
-      );
-    }
-    for (const app of domainApps) {
-      companyGroups.set(app.company, (companyGroups.get(app.company) ?? 0) + 1);
-    }
+  for (const app of positionFilteredApps) {
+    companyGroups.set(app.company, (companyGroups.get(app.company) ?? 0) + 1);
   }
-
   const sortedCompanies = [...companyGroups.entries()].sort(
     (a, b) => b[1] - a[1]
   );
 
-  // Positions for selected company
-  const companyPositions = selectedCompany
-    ? applications.filter((a) => a.company === selectedCompany)
+  // Detail applications when both company and position are selected
+  const detailApps = (selectedCompany && selectedPosition)
+    ? domainApps.filter(
+        (a) => a.company === selectedCompany && getPositionCategory(a.position) === selectedPosition
+      )
     : [];
 
   const handleBack = () => {
-    if (selectedCompany) {
+    if (selectedCompany && selectedPosition) {
+      // Go back to filtered view (keep whichever was selected first)
+      setSelectedPosition(null);
+    } else if (selectedCompany) {
       setSelectedCompany(null);
     } else if (selectedPosition) {
       setSelectedPosition(null);
@@ -141,18 +142,22 @@ export function ApplicationTagBreakdown({ applications }: Props) {
     }
   };
 
-  const title = selectedCompany
-    ? `${selectedCompany} — Positions`
-    : selectedPosition
-      ? `${selectedDomain} — ${selectedPosition}`
-      : selectedDomain
-        ? `${selectedDomain} — Breakdown`
-        : "Applications by Industry";
+  const title = (selectedCompany && selectedPosition)
+    ? `${selectedCompany} — ${selectedPosition}`
+    : selectedCompany
+      ? `${selectedDomain} — ${selectedCompany}`
+      : selectedPosition
+        ? `${selectedDomain} — ${selectedPosition}`
+        : selectedDomain
+          ? `${selectedDomain} — Breakdown`
+          : "Applications by Industry";
+
+  const showDetails = selectedCompany && selectedPosition;
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 pb-3">
-        {(selectedDomain || selectedCompany) && (
+        {(selectedDomain || selectedCompany || selectedPosition) && (
           <Button
             variant="ghost"
             size="icon"
@@ -168,7 +173,7 @@ export function ApplicationTagBreakdown({ applications }: Props) {
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {!selectedDomain && !selectedCompany ? (
+        {!selectedDomain ? (
           <div className="flex flex-wrap gap-2">
             {sortedDomains.map(([domain, apps]) => (
               <TagPill
@@ -180,9 +185,9 @@ export function ApplicationTagBreakdown({ applications }: Props) {
               />
             ))}
           </div>
-        ) : selectedCompany ? (
+        ) : showDetails ? (
           <div className="space-y-2">
-            {companyPositions.map((app) => (
+            {detailApps.map((app) => (
               <div
                 key={app.id}
                 className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-muted/50"
@@ -220,8 +225,11 @@ export function ApplicationTagBreakdown({ applications }: Props) {
                     key={company}
                     label={company}
                     count={count}
+                    isActive={selectedCompany === company}
                     icon={getCompanyIcon(company)}
-                    onClick={() => setSelectedCompany(company)}
+                    onClick={() =>
+                      setSelectedCompany(selectedCompany === company ? null : company)
+                    }
                   />
                 ))}
               </div>
