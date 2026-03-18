@@ -46,7 +46,7 @@ graph TD
 - **Tag system** — Organize applications with custom tags for easy filtering
 - **AI-powered industry detection** — Unknown companies are automatically categorized via an AI edge function (Gemini Flash Lite), so new entries are tagged correctly without manual input
 - **Industry & company categorization** — Auto-categorizes companies by industry domain (AI/ML, Fintech, etc.) with generated logos and drill-down navigation
-- **Position categorization** — Auto-groups positions by role type (Software Engineering, Test Engineering, Program Management, etc.)
+- **Position auto-tagging** — Automatically tags applications by role type (SE, SSE, SDET, SSDET, Frontend, Backend, DevOps, etc.) using keyword and word-boundary matching
 - **CSV export** — Export your filtered application list (company, position, status, dates, notes, job URL) to a CSV file for offline use or sharing
 - **Dark / light theme** — Toggle between dark and light modes for comfortable viewing
 - **Responsive design** — Fully usable on desktop, tablet, and mobile with a collapsible navigation menu
