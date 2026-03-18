@@ -18,6 +18,9 @@ import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
 export default function Applications() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const positionCategory = searchParams.get("position_category");
+
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">("all");
   const [search, setSearch] = useState("");
   const [editApp, setEditApp] = useState<Application | null>(null);
