@@ -31,11 +31,20 @@ export default function Applications() {
   const deleteApp = useDeleteApplication();
   const updateApp = useUpdateApplication();
 
-  const filtered = (applications ?? []).filter(
-    (a) =>
+  const filtered = (applications ?? []).filter((a) => {
+    const matchesSearch =
       a.company.toLowerCase().includes(search.toLowerCase()) ||
-      a.position.toLowerCase().includes(search.toLowerCase())
-  );
+      a.position.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = positionCategory
+      ? getPositionCategory(a.position) === positionCategory
+      : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  const clearPositionFilter = () => {
+    searchParams.delete("position_category");
+    setSearchParams(searchParams);
+  };
 
   const handleDelete = async () => {
     if (!deleteId) return;
