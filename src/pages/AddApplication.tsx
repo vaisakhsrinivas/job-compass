@@ -21,6 +21,7 @@ import { toast } from "@/hooks/use-toast";
 import { getCompanyDomain } from "@/components/companyDomains";
 import { getCompanyIcon } from "@/components/companyIcons";
 import { getIndustryIcon } from "@/components/industryIcons";
+import { getPositionCategory } from "@/components/positionCategories";
 import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
@@ -144,6 +145,12 @@ export default function AddApplication() {
 
     if (domain && !userTags.includes(domain)) {
       userTags.push(domain);
+    }
+
+    // Auto-add position category tag
+    const positionCat = getPositionCategory(values.position);
+    if (positionCat && !userTags.includes(positionCat)) {
+      userTags.push(positionCat);
     }
 
     try {
