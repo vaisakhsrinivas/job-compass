@@ -151,7 +151,8 @@ export default function Applications() {
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
-        )
+        )}
+
 
         {isLoading ? (
           <div className="flex h-32 items-center justify-center">
