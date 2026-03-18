@@ -97,7 +97,8 @@ src/
 │   ├── StatusBadge.tsx      # Application status indicator
 │   ├── companyDomains.ts    # Company → industry domain mapping (shared lookup)
 │   ├── companyIcons.ts      # Company name → logo mapping
-│   └── industryIcons.ts     # Industry domain → icon mapping
+│   ├── industryIcons.ts     # Industry domain → icon mapping
+│   └── positionCategories.ts # Position → role category mapping (keyword + word-boundary)
 ├── hooks/
 │   ├── useApplications.tsx  # CRUD operations for job applications
 │   ├── useAuth.tsx          # Authentication state management
