@@ -140,6 +140,19 @@ export default function Applications() {
           </Select>
         </div>
 
+        {positionCategory && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Filtered by:</span>
+            <button
+              onClick={clearPositionFilter}
+              className="inline-flex items-center gap-1.5 rounded-full border border-accent bg-accent/10 px-3 py-1 text-sm font-medium text-foreground transition-colors hover:bg-accent/20"
+            >
+              {positionCategory}
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )
+
         {isLoading ? (
           <div className="flex h-32 items-center justify-center">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
