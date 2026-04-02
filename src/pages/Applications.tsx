@@ -132,7 +132,15 @@ export default function Applications() {
               className="pl-9"
             />
           </div>
-          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
+          <Select value={statusFilter} onValueChange={(v) => {
+            setStatusFilter(v as any);
+            if (v === "all") {
+              searchParams.delete("status");
+            } else {
+              searchParams.set("status", v);
+            }
+            setSearchParams(searchParams);
+          }}>
             <SelectTrigger className="w-full sm:w-48">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>

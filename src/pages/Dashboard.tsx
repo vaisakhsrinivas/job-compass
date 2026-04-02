@@ -114,7 +114,7 @@ export default function Dashboard() {
             <CardTitle className="text-base">Application Status Breakdown</CardTitle>
           </CardHeader>
           <CardContent>
-            <SegmentedProgress stats={s} />
+            <SegmentedProgress stats={s} onStatusClick={(status) => navigate(`/applications?status=${status}`)} />
           </CardContent>
         </Card>
 
