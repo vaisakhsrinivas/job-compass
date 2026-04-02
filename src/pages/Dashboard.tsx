@@ -74,6 +74,7 @@ export default function Dashboard() {
   }
 
   const s = stats ?? { total: 0, applied: 0, interviews: 0, offers: 0, rejected: 0 };
+  const navigate = useNavigate();
 
   const metricCards = [
     { title: "Total Applications", value: s.total, icon: FileText, accent: "text-[hsl(var(--status-applied))]" },
