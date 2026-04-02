@@ -5,9 +5,9 @@ import { ApplicationTagBreakdown } from "@/components/ApplicationTagBreakdown";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FileText, Calendar, Clock, Loader2, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function SegmentedProgress({ stats }: { stats: { applied: number; interviews: number; offers: number; rejected: number; total: number } }) {
+function SegmentedProgress({ stats, onStatusClick }: { stats: { applied: number; interviews: number; offers: number; rejected: number; total: number }; onStatusClick: (status: string) => void }) {
   if (stats.total === 0) {
     return (
       <div className="space-y-3">
@@ -19,7 +19,7 @@ function SegmentedProgress({ stats }: { stats: { applied: number; interviews: nu
 
   const segments = [
     { key: "applied", pct: (stats.applied / stats.total) * 100, color: "bg-[hsl(var(--status-applied))]", label: "Applied", count: stats.applied },
-    { key: "interview", pct: (stats.interviews / stats.total) * 100, color: "bg-[hsl(var(--status-interview))]", label: "Interview", count: stats.interviews },
+    { key: "interview_scheduled", pct: (stats.interviews / stats.total) * 100, color: "bg-[hsl(var(--status-interview))]", label: "Interview", count: stats.interviews },
     { key: "offer", pct: (stats.offers / stats.total) * 100, color: "bg-[hsl(var(--status-offer))]", label: "Offer", count: stats.offers },
     { key: "rejected", pct: (stats.rejected / stats.total) * 100, color: "bg-[hsl(var(--status-rejected))]", label: "Rejected", count: stats.rejected },
   ];
@@ -29,19 +29,29 @@ function SegmentedProgress({ stats }: { stats: { applied: number; interviews: nu
       <div className="flex h-3 w-full overflow-hidden rounded-full bg-muted">
         {segments.map((s) =>
           s.pct > 0 ? (
-            <div key={s.key} className={`${s.color} h-full transition-all`} style={{ width: `${s.pct}%` }} />
+            <div
+              key={s.key}
+              className={`${s.color} h-full cursor-pointer transition-all hover:opacity-80`}
+              style={{ width: `${s.pct}%` }}
+              onClick={() => onStatusClick(s.key)}
+              title={`View ${s.label} applications`}
+            />
           ) : null
         )}
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {segments.map((s) => (
-          <div key={s.key} className="flex items-center gap-2 rounded-lg border bg-card p-2.5">
+          <button
+            key={s.key}
+            onClick={() => onStatusClick(s.key)}
+            className="flex items-center gap-2 rounded-lg border bg-card p-2.5 text-left transition-colors hover:bg-accent/30 cursor-pointer"
+          >
             <span className={`inline-block h-3 w-3 rounded-full ${s.color}`} />
             <div>
               <p className="text-xs text-muted-foreground">{s.label}</p>
               <p className="text-sm font-semibold">{s.count} <span className="text-xs font-normal text-muted-foreground">({Math.round(s.pct)}%)</span></p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
@@ -64,6 +74,7 @@ export default function Dashboard() {
   }
 
   const s = stats ?? { total: 0, applied: 0, interviews: 0, offers: 0, rejected: 0 };
+  const navigate = useNavigate();
 
   const metricCards = [
     { title: "Total Applications", value: s.total, icon: FileText, accent: "text-[hsl(var(--status-applied))]" },
@@ -103,7 +114,7 @@ export default function Dashboard() {
             <CardTitle className="text-base">Application Status Breakdown</CardTitle>
           </CardHeader>
           <CardContent>
-            <SegmentedProgress stats={s} />
+            <SegmentedProgress stats={s} onStatusClick={(status) => navigate(`/applications?status=${status}`)} />
           </CardContent>
         </Card>
 

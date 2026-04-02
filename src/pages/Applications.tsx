@@ -20,9 +20,15 @@ import { toast } from "@/hooks/use-toast";
 export default function Applications() {
   const [searchParams, setSearchParams] = useSearchParams();
   const positionCategory = searchParams.get("position_category");
+  const statusParam = searchParams.get("status") as ApplicationStatus | null;
 
-  const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">("all");
+  const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">(statusParam ?? "all");
   const [search, setSearch] = useState("");
+
+  // Sync statusFilter when URL param changes
+  useEffect(() => {
+    setStatusFilter(statusParam ?? "all");
+  }, [statusParam]);
   const [editApp, setEditApp] = useState<Application | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { user } = useAuth();
@@ -126,7 +132,15 @@ export default function Applications() {
               className="pl-9"
             />
           </div>
-          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
+          <Select value={statusFilter} onValueChange={(v) => {
+            setStatusFilter(v as any);
+            if (v === "all") {
+              searchParams.delete("status");
+            } else {
+              searchParams.set("status", v);
+            }
+            setSearchParams(searchParams);
+          }}>
             <SelectTrigger className="w-full sm:w-48">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
