@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Loader2, Pencil, Trash2, ExternalLink, Download, X } from "lucide-react";
+import { Search, Loader2, Pencil, Trash2, ExternalLink, Download, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { getPositionCategory } from "@/components/positionCategories";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
@@ -24,10 +24,13 @@ export default function Applications() {
 
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">(statusParam ?? "all");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
 
   // Sync statusFilter when URL param changes
   useEffect(() => {
     setStatusFilter(statusParam ?? "all");
+    setCurrentPage(1);
   }, [statusParam]);
   const [editApp, setEditApp] = useState<Application | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -46,6 +49,17 @@ export default function Applications() {
       : true;
     return matchesSearch && matchesCategory;
   });
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter, positionCategory]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginatedApps = filtered.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   const clearPositionFilter = () => {
     searchParams.delete("position_category");
@@ -167,7 +181,6 @@ export default function Applications() {
           </div>
         )}
 
-
         {isLoading ? (
           <div className="flex h-32 items-center justify-center">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -179,45 +192,87 @@ export default function Applications() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-2">
-            {filtered.map((app) => (
-              <Card key={app.id} className="transition-colors hover:bg-accent/30">
-                <CardContent className="flex items-center gap-4 p-4">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="truncate font-medium">{app.company}</p>
-                      {app.job_url && (
-                        <a href={app.job_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                          <ExternalLink className="h-3.5 w-3.5" />
-                        </a>
+          <>
+            <div className="space-y-2">
+              {paginatedApps.map((app) => (
+                <Card key={app.id} className="transition-colors hover:bg-accent/30">
+                  <CardContent className="flex items-center gap-4 p-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="truncate font-medium">{app.company}</p>
+                        {app.job_url && (
+                          <a href={app.job_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                            <ExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        )}
+                      </div>
+                      <p className="truncate text-sm text-muted-foreground">{app.position}</p>
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <StatusBadge status={app.status} />
+                        <span className="text-xs text-muted-foreground">
+                          Applied {format(new Date(app.date_applied), "MMM d, yyyy")}
+                        </span>
+                        {app.location && (
+                          <span className="text-xs text-muted-foreground">· {app.location}</span>
+                        )}
+                      </div>
+                      {app.notes && (
+                        <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">{app.notes}</p>
                       )}
                     </div>
-                    <p className="truncate text-sm text-muted-foreground">{app.position}</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <StatusBadge status={app.status} />
-                      <span className="text-xs text-muted-foreground">
-                        Applied {format(new Date(app.date_applied), "MMM d, yyyy")}
-                      </span>
-                      {app.location && (
-                        <span className="text-xs text-muted-foreground">· {app.location}</span>
-                      )}
+                    <div className="flex gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => openEdit(app)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => setDeleteId(app.id)}>
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
                     </div>
-                    {app.notes && (
-                      <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">{app.notes}</p>
-                    )}
-                  </div>
-                  <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" onClick={() => openEdit(app)}>
-                      <Pencil className="h-4 w-4" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between pt-4">
+                <p className="text-sm text-muted-foreground">
+                  Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
+                </p>
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <Button
+                      key={page}
+                      variant={page === currentPage ? "default" : "outline"}
+                      size="sm"
+                      className="h-8 w-8 p-0"
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => setDeleteId(app.id)}>
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
