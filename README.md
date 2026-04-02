@@ -94,6 +94,7 @@ src/
 │   ├── AppLayout.tsx        # Navbar and page wrapper
 │   ├── ApplicationTagBreakdown.tsx  # 3-level drill-down: Industry → Company → Positions
 │   ├── NavLink.tsx          # Navigation link component
+│   ├── PostHogProvider.tsx  # PostHog analytics React provider
 │   ├── StatusBadge.tsx      # Application status indicator
 │   ├── companyDomains.ts    # Company → industry domain mapping (shared lookup)
 │   ├── companyIcons.ts      # Company name → logo mapping
@@ -108,7 +109,8 @@ src/
 ├── integrations/
 │   └── supabase/            # Auto-generated client and types
 ├── lib/
-│   └── utils.ts             # Shared utility functions
+│   ├── posthog.ts            # PostHog analytics client initialization
+│   └── utils.ts              # Shared utility functions
 ├── pages/
 │   ├── Auth.tsx             # Login / Sign-up page
 │   ├── Dashboard.tsx        # Overview with metrics, charts, and tag breakdown
