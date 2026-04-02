@@ -30,6 +30,7 @@ export default function Applications() {
   // Sync statusFilter when URL param changes
   useEffect(() => {
     setStatusFilter(statusParam ?? "all");
+    setCurrentPage(1);
   }, [statusParam]);
   const [editApp, setEditApp] = useState<Application | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
