@@ -94,6 +94,7 @@ src/
 │   ├── AppLayout.tsx        # Navbar and page wrapper
 │   ├── ApplicationTagBreakdown.tsx  # 3-level drill-down: Industry → Company → Positions
 │   ├── NavLink.tsx          # Navigation link component
+│   ├── PostHogProvider.tsx  # PostHog analytics React provider
 │   ├── StatusBadge.tsx      # Application status indicator
 │   ├── companyDomains.ts    # Company → industry domain mapping (shared lookup)
 │   ├── companyIcons.ts      # Company name → logo mapping
