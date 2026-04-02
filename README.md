@@ -108,7 +108,8 @@ src/
 ├── integrations/
 │   └── supabase/            # Auto-generated client and types
 ├── lib/
-│   └── utils.ts             # Shared utility functions
+│   ├── posthog.ts            # PostHog analytics client initialization
+│   └── utils.ts              # Shared utility functions
 ├── pages/
 │   ├── Auth.tsx             # Login / Sign-up page
 │   ├── Dashboard.tsx        # Overview with metrics, charts, and tag breakdown
