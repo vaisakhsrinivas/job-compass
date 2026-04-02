@@ -170,6 +170,16 @@ export default function Applications() {
           </div>
         )}
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter, positionCategory]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginatedApps = filtered.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
         {isLoading ? (
           <div className="flex h-32 items-center justify-center">
