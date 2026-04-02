@@ -33,6 +33,7 @@ export function useAuth() {
   }, []);
 
   const signOut = async () => {
+    posthog.reset();
     await supabase.auth.signOut();
   };
 
