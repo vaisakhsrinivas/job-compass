@@ -5,7 +5,7 @@ import { ApplicationTagBreakdown } from "@/components/ApplicationTagBreakdown";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FileText, Calendar, Clock, Loader2, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SegmentedProgress({ stats }: { stats: { applied: number; interviews: number; offers: number; rejected: number; total: number } }) {
   if (stats.total === 0) {
