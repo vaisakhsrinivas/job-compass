@@ -44,6 +44,7 @@ function AuthRoute() {
 }
 
 const App = () => (
+  <PostHogProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
