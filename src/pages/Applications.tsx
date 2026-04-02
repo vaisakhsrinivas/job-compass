@@ -24,6 +24,8 @@ export default function Applications() {
 
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">(statusParam ?? "all");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
 
   // Sync statusFilter when URL param changes
   useEffect(() => {
